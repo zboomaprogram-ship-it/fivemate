@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "583797486169",
+    "project_id": "amat-4626e",
+    "storage_bucket": "amat-4626e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583797486169:android:33340022a65c9bb1183748",
+        "android_client_info": {
+          "package_name": "com.zbooma.fiveamat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAo-u6wd1_7LPJGtvpO0pe0mlebpnB5U1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

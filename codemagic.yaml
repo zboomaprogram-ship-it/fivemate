@@ -1,0 +1,84 @@
+# Codemagic configuration file for 5amat Flutter App
+# For more information on configuring your build, see:
+# https://docs.codemagic.io/yaml-configuration/configuring-codemagic-yaml/
+
+workflows:
+  android-workflow:
+    name: Android Production Build
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    environment:
+      groups:
+        - keystore_credentials # optional: for loading keystore properties from environment variables
+      vars:
+        PACKAGE_NAME: "com.zbooma.fiveamat"
+      flutter: stable
+      java: 17
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+    scripts:
+      - name: Set up key.properties
+        script: |
+          # Recreate key.properties dynamically if keystore environment variables are set in Codemagic UI
+          if [ -n "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/release-key.jks
+            echo "storeFile=release-key.jks" > android/key.properties
+            echo "storePassword=$ANDROID_KEYSTORE_PASSWORD" >> android/key.properties
+            echo "keyPassword=$ANDROID_KEY_PASSWORD" >> android/key.properties
+            echo "keyAlias=$ANDROID_KEY_ALIAS" >> android/key.properties
+          fi
+      - name: Get dependencies
+        script: |
+          flutter packages pub get
+      - name: Build Android App Bundle (Release)
+        script: |
+          flutter build appbundle --release
+    artifacts:
+      - build/app/outputs/bundle/release/*.aab
+      - build/app/outputs/apk/release/*.apk
+
+  ios-workflow:
+    name: iOS Production Build
+    max_build_duration: 120
+    instance_type: mac_mini_m1
+    environment:
+      groups:
+        - app_store_credentials # optional: define APP_STORE_CONNECT_PRIVATE_KEY, APP_STORE_CONNECT_KEY_IDENTIFIER, APP_STORE_CONNECT_ISSUER_ID in Codemagic UI
+      vars:
+        BUNDLE_ID: "com.zbooma.fiveamat"
+        XCODE_WORKSPACE: "Runner.xcworkspace"
+        XCODE_SCHEME: "Runner"
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+    scripts:
+      - name: Install CocoaPods dependencies
+        script: |
+          cd ios && pod install
+      - name: Set up keychain and fetching signing certificates
+        script: |
+          keychain initialize
+          # Fetch and install code signing files from Apple Developer Portal if App Store Connect API keys are configured
+          if [ -n "$APP_STORE_CONNECT_PRIVATE_KEY" ]; then
+            app-store-connect fetch-signing-files "$BUNDLE_ID" --project-id "$APP_STORE_CONNECT_PROJECT_ID" --create
+            keychain add-certificates
+          else
+            echo "App Store Connect credentials not set. Building in ad-hoc/un-signed mode or relying on Codemagic UI automatic code signing."
+          fi
+      - name: Build iOS IPA
+        script: |
+          flutter build ipa --release --no-codesign
+    artifacts:
+      - build/ios/ipa/*.ipa
