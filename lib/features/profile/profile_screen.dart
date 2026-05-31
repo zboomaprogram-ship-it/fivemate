@@ -76,7 +76,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('مسح السجل؟', textAlign: TextAlign.right),
-        content: const Text('هل أنت متأكد من رغبتك في حذف سجل الطلبات بالكامل؟', textAlign: TextAlign.right),
+        content: const Text(
+          'هل أنت متأكد من رغبتك في حذف سجل الطلبات بالكامل؟',
+          textAlign: TextAlign.right,
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -88,7 +91,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               Navigator.pop(context);
               _loadProfileData();
             },
-            child: const Text('نعم، مسح السجل', style: TextStyle(color: AppColors.alert)),
+            child: const Text(
+              'نعم، مسح السجل',
+              style: TextStyle(color: AppColors.alert),
+            ),
           ),
         ],
       ),
@@ -135,7 +141,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       const SizedBox(height: 6),
                       Text(
                         _phone,
-                        style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMedium),
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.textMedium,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -167,13 +175,38 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildDetailRow(Icons.person_outline, 'الاسم الكامل', _name),
-                          const Divider(height: 20, color: AppColors.borderLight),
-                          _buildDetailRow(Icons.phone_iphone_outlined, 'الهاتف', _phone),
-                          const Divider(height: 20, color: AppColors.borderLight),
-                          _buildDetailRow(Icons.map_outlined, 'المحافظة', _governorate),
-                          const Divider(height: 20, color: AppColors.borderLight),
-                          _buildDetailRow(Icons.location_on_outlined, 'العنوان بالتفصيل', _address),
+                          _buildDetailRow(
+                            Icons.person_outline,
+                            'الاسم الكامل',
+                            _name,
+                          ),
+                          const Divider(
+                            height: 20,
+                            color: AppColors.borderLight,
+                          ),
+                          _buildDetailRow(
+                            Icons.phone_iphone_outlined,
+                            'الهاتف',
+                            _phone,
+                          ),
+                          const Divider(
+                            height: 20,
+                            color: AppColors.borderLight,
+                          ),
+                          _buildDetailRow(
+                            Icons.map_outlined,
+                            'المحافظة',
+                            _governorate,
+                          ),
+                          const Divider(
+                            height: 20,
+                            color: AppColors.borderLight,
+                          ),
+                          _buildDetailRow(
+                            Icons.location_on_outlined,
+                            'العنوان بالتفصيل',
+                            _address,
+                          ),
                         ],
                       ),
               ),
@@ -199,10 +232,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               Card(
                 color: AppColors.surface,
                 child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 32.0, horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 32.0,
+                    horizontal: 16.0,
+                  ),
                   child: Column(
                     children: [
-                      Icon(Icons.receipt_long_outlined, size: 40, color: AppColors.textLight),
+                      Icon(
+                        Icons.receipt_long_outlined,
+                        size: 40,
+                        color: AppColors.textLight,
+                      ),
                       SizedBox(height: 12),
                       Text(
                         'لا توجد طلبات سابقة مسجلة في هذا الجهاز.',
@@ -221,9 +261,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 itemBuilder: (context, index) {
                   // Show newer orders first
                   final order = _orders[_orders.length - 1 - index];
-                  final date = DateTime.tryParse(order['date'] ?? '') ?? DateTime.now();
-                  final formattedDate = '${date.year}/${date.month}/${date.day} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
-                  
+                  final date =
+                      DateTime.tryParse(order['date'] ?? '') ?? DateTime.now();
+                  final formattedDate =
+                      '${date.year}/${date.month}/${date.day} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+
                   return Card(
                     margin: const EdgeInsets.symmetric(vertical: 6),
                     color: AppColors.surface,
@@ -237,29 +279,44 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             children: [
                               Text(
                                 formattedDate,
-                                style: AppTextStyles.bodySmall.copyWith(fontWeight: FontWeight.bold),
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 4,
+                                ),
                                 decoration: BoxDecoration(
                                   color: AppColors.secondary.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: const Text(
                                   'تم الإرسال للواتساب',
-                                  style: TextStyle(color: AppColors.secondary, fontSize: 10, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    color: AppColors.secondary,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                          const Divider(height: 20, color: AppColors.borderLight),
+                          const Divider(
+                            height: 20,
+                            color: AppColors.borderLight,
+                          ),
                           Text(
                             order['items_summary'] ?? '',
                             style: AppTextStyles.body.copyWith(fontSize: 13),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          const Divider(height: 20, color: AppColors.borderLight),
+                          const Divider(
+                            height: 20,
+                            color: AppColors.borderLight,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -273,44 +330,92 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                         final phone = order['phone'] ?? '';
                                         final name = order['name'] ?? '';
                                         final msg = Uri.encodeComponent(
-                                          'مرحباً متجر خامات، أود الاستفسار عن حالة طلبي المرسل بتاريخ $formattedDate.\n\nالاسم: $name\nالهاتف: $phone'
+                                          'مرحباً متجر خامات، أود الاستفسار عن حالة طلبي المرسل بتاريخ $formattedDate.\n\nالاسم: $name\nالهاتف: $phone',
                                         );
                                         final box = Hive.box('cache_box');
-                                        final cachedConfig = box.get('cached_config');
+                                        final cachedConfig = box.get(
+                                          'cached_config',
+                                        );
                                         String whatsappNum = '201099684347';
-                                        if (cachedConfig is Map && cachedConfig['whatsapp_number'] != null) {
-                                          whatsappNum = cachedConfig['whatsapp_number'].toString();
+                                        if (cachedConfig is Map &&
+                                            cachedConfig['whatsapp_number'] !=
+                                                null) {
+                                          whatsappNum =
+                                              cachedConfig['whatsapp_number']
+                                                  .toString();
                                         }
-                                        final url = 'https://wa.me/$whatsappNum?text=$msg';
-                                        if (await url_launcher.canLaunchUrl(Uri.parse(url))) {
-                                          await url_launcher.launchUrl(Uri.parse(url), mode: url_launcher.LaunchMode.externalApplication);
+                                        final url =
+                                            'https://wa.me/$whatsappNum?text=$msg';
+                                        if (await url_launcher.canLaunchUrl(
+                                          Uri.parse(url),
+                                        )) {
+                                          await url_launcher.launchUrl(
+                                            Uri.parse(url),
+                                            mode: url_launcher
+                                                .LaunchMode
+                                                .externalApplication,
+                                          );
                                         }
                                       },
-                                      icon: const Icon(Icons.support_agent, size: 14, color: AppColors.primary),
+                                      icon: const Icon(
+                                        Icons.support_agent,
+                                        size: 14,
+                                        color: AppColors.primary,
+                                      ),
                                       label: const Text(
                                         'تتبع الطلب',
-                                        style: TextStyle(fontFamily: 'Tajawal', fontSize: 11, color: AppColors.primary, fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                          fontFamily: 'Tajawal',
+                                          fontSize: 11,
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                     if (order['message'] != null)
                                       TextButton.icon(
                                         onPressed: () async {
                                           final box = Hive.box('cache_box');
-                                          final cachedConfig = box.get('cached_config');
-                                          String whatsappNum = '201099684347';
-                                          if (cachedConfig is Map && cachedConfig['whatsapp_number'] != null) {
-                                            whatsappNum = cachedConfig['whatsapp_number'].toString();
+                                          final cachedConfig = box.get(
+                                            'cached_config',
+                                          );
+                                          String whatsappNum = '201092970736';
+                                          if (cachedConfig is Map &&
+                                              cachedConfig['whatsapp_number'] !=
+                                                  null) {
+                                            whatsappNum =
+                                                cachedConfig['whatsapp_number']
+                                                    .toString();
                                           }
-                                          final msg = Uri.encodeComponent(order['message']);
-                                          final url = 'https://wa.me/$whatsappNum?text=$msg';
-                                          if (await url_launcher.canLaunchUrl(Uri.parse(url))) {
-                                            await url_launcher.launchUrl(Uri.parse(url), mode: url_launcher.LaunchMode.externalApplication);
+                                          final msg = Uri.encodeComponent(
+                                            order['message'],
+                                          );
+                                          final url =
+                                              'https://wa.me/$whatsappNum?text=$msg';
+                                          if (await url_launcher.canLaunchUrl(
+                                            Uri.parse(url),
+                                          )) {
+                                            await url_launcher.launchUrl(
+                                              Uri.parse(url),
+                                              mode: url_launcher
+                                                  .LaunchMode
+                                                  .externalApplication,
+                                            );
                                           }
                                         },
-                                        icon: const Icon(Icons.send_rounded, size: 12, color: AppColors.secondary),
+                                        icon: const Icon(
+                                          Icons.send_rounded,
+                                          size: 12,
+                                          color: AppColors.secondary,
+                                        ),
                                         label: const Text(
                                           'إعادة الإرسال',
-                                          style: TextStyle(fontFamily: 'Tajawal', fontSize: 11, color: AppColors.secondary, fontWeight: FontWeight.bold),
+                                          style: TextStyle(
+                                            fontFamily: 'Tajawal',
+                                            fontSize: 11,
+                                            color: AppColors.secondary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ),
                                   ],
@@ -319,7 +424,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               const SizedBox(width: 8),
                               Text(
                                 '${(order['total'] as num?)?.toStringAsFixed(2) ?? '0.00'} ج.م',
-                                style: AppTextStyles.price.copyWith(fontSize: 15),
+                                style: AppTextStyles.price.copyWith(
+                                  fontSize: 15,
+                                ),
                               ),
                             ],
                           ),
@@ -339,10 +446,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 child: Column(
                   children: [
                     ListTile(
-                      leading: const Icon(Icons.style_outlined, color: AppColors.primary),
+                      leading: const Icon(
+                        Icons.style_outlined,
+                        color: AppColors.primary,
+                      ),
                       title: const Text(
                         'معرض التنسيقات والأفكار (Lookbook)',
-                        style: const TextStyle(fontFamily: 'Tajawal', fontWeight: FontWeight.bold, fontSize: 14),
+                        style: const TextStyle(
+                          fontFamily: 'Tajawal',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
                       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                       onTap: () {
@@ -351,10 +465,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                     const Divider(height: 1, color: AppColors.borderLight),
                     ListTile(
-                      leading: const Icon(Icons.design_services_outlined, color: AppColors.primary),
+                      leading: const Icon(
+                        Icons.design_services_outlined,
+                        color: AppColors.primary,
+                      ),
                       title: const Text(
                         'طلب تصميم خاص (Custom Order)',
-                        style: const TextStyle(fontFamily: 'Tajawal', fontWeight: FontWeight.bold, fontSize: 14),
+                        style: const TextStyle(
+                          fontFamily: 'Tajawal',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
                       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                       onTap: () {
@@ -378,7 +499,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('إصدار التطبيق', style: AppTextStyles.body),
-                        Text('1.0.0', style: AppTextStyles.bodySmall.copyWith(fontWeight: FontWeight.bold)),
+                        Text(
+                          '1.0.0',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                     const Divider(height: 24, color: AppColors.borderLight),
@@ -386,7 +512,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('الدعم الفني', style: AppTextStyles.body),
-                        Text('support@5amat-handmade.com', style: TextStyle(color: AppColors.primaryDark, fontSize: 12)),
+                        Text(
+                          'support@5amat-handmade.com',
+                          style: TextStyle(
+                            color: AppColors.primaryDark,
+                            fontSize: 12,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -403,13 +535,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget _buildLoyaltyCard() {
     final int points = _verifiedPoints ?? (_orders.length * 10);
     final bool isVerified = _verifiedPoints != null;
-    
+
     String tierName = 'الهاوي البرونزي (Bronze)';
     Color tierColor = Colors.brown.shade400;
     IconData tierIcon = Icons.stars_outlined;
     double progress = 0.0;
     String nextTierText = 'متبقي 30 نقطة للوصول للمستوى الفضي';
-    
+
     if (points >= 60) {
       tierName = 'المصمم الذهبي (Gold)';
       tierColor = Colors.amber.shade700;
@@ -426,7 +558,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       progress = points / 30;
       nextTierText = 'متبقي ${30 - points} نقطة للوصول للمستوى الفضي';
     }
-    
+
     return Card(
       color: AppColors.surface,
       elevation: 2,
@@ -471,10 +603,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                       height: 10,
                                       child: CircularProgressIndicator(
                                         strokeWidth: 1.0,
-                                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                              AppColors.primary,
+                                            ),
                                       ),
                                     )
-                                  : const Icon(Icons.refresh, size: 14, color: AppColors.primary),
+                                  : const Icon(
+                                      Icons.refresh,
+                                      size: 14,
+                                      color: AppColors.primary,
+                                    ),
                             ),
                           ],
                         ],
@@ -499,18 +638,29 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (isVerified) ...[
-                          const Icon(Icons.verified, color: Colors.blue, size: 14),
+                          const Icon(
+                            Icons.verified,
+                            color: Colors.blue,
+                            size: 14,
+                          ),
                           const SizedBox(width: 4),
                         ],
                         Text(
                           '$points',
-                          style: AppTextStyles.h1.copyWith(color: AppColors.primary, fontSize: 24),
+                          style: AppTextStyles.h1.copyWith(
+                            color: AppColors.primary,
+                            fontSize: 24,
+                          ),
                         ),
                       ],
                     ),
                     const Text(
                       'نقطة مفعّلة',
-                      style: TextStyle(fontFamily: 'Tajawal', fontSize: 10, color: AppColors.textMedium),
+                      style: TextStyle(
+                        fontFamily: 'Tajawal',
+                        fontSize: 10,
+                        color: AppColors.textMedium,
+                      ),
                     ),
                   ],
                 ),
@@ -539,7 +689,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   ),
                 ),
                 Text(
-                  isVerified ? 'تم التحقق من المتجر' : '${_orders.length} طلبات',
+                  isVerified
+                      ? 'تم التحقق من المتجر'
+                      : '${_orders.length} طلبات',
                   style: TextStyle(
                     fontFamily: 'Tajawal',
                     fontSize: 11,
@@ -565,13 +717,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: AppTextStyles.bodySmall.copyWith(fontSize: 11)),
+              Text(
+                label,
+                style: AppTextStyles.bodySmall.copyWith(fontSize: 11),
+              ),
               const SizedBox(height: 2),
               Text(
                 value.isNotEmpty ? value : 'غير مسجل',
                 style: AppTextStyles.body.copyWith(
-                  color: value.isNotEmpty ? AppColors.textDark : AppColors.textLight,
-                  fontWeight: value.isNotEmpty ? FontWeight.w600 : FontWeight.normal,
+                  color: value.isNotEmpty
+                      ? AppColors.textDark
+                      : AppColors.textLight,
+                  fontWeight: value.isNotEmpty
+                      ? FontWeight.w600
+                      : FontWeight.normal,
                 ),
               ),
             ],
