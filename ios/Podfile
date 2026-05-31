@@ -37,8 +37,10 @@ end
 
 target 'OneSignalNotificationServiceExtension' do
   use_frameworks!
-  pod 'OneSignalExtension', '>= 5.0.0', '< 6.0.0'
+  pod 'OneSignalXCFramework', '>= 5.0.0', '< 6.0.0'
 end
+
+install! 'cocoapods', :disable_input_output_paths => true
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
