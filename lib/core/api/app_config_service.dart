@@ -39,7 +39,7 @@ class AppConfigService {
     }
   }
 
-  AppConfigModel _getLocalOrCachedFallback() {
+  AppConfigModel? getCachedConfig() {
     try {
       final box = Hive.box('cache_box');
       final cachedData = box.get('cached_app_config');
@@ -51,7 +51,11 @@ class AppConfigService {
         return config;
       }
     } catch (_) {}
-    return AppConfigModel.localFallback;
+    return null;
+  }
+
+  AppConfigModel _getLocalOrCachedFallback() {
+    return getCachedConfig() ?? AppConfigModel.localFallback;
   }
 }
 

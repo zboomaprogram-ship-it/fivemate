@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../shared/providers/app_config_provider.dart';
 import '../../core/theme/app_colors.dart';
 
-
 class CustomOrderScreen extends ConsumerStatefulWidget {
   const CustomOrderScreen({super.key});
 
@@ -64,13 +63,16 @@ class _CustomOrderScreenState extends ConsumerState<CustomOrderScreen> {
                 Text(
                   'اختر مصدر الصورة',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontFamily: 'Tajawal',
-                        fontWeight: FontWeight.bold,
-                      ),
+                    fontFamily: 'Tajawal',
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 ListTile(
-                  leading: const Icon(Icons.photo_library, color: AppColors.primary),
+                  leading: const Icon(
+                    Icons.photo_library,
+                    color: AppColors.primary,
+                  ),
                   title: const Text(
                     'المعرض (الاستوديو)',
                     style: TextStyle(fontFamily: 'Tajawal'),
@@ -81,7 +83,10 @@ class _CustomOrderScreenState extends ConsumerState<CustomOrderScreen> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.camera_alt, color: AppColors.primary),
+                  leading: const Icon(
+                    Icons.camera_alt,
+                    color: AppColors.primary,
+                  ),
                   title: const Text(
                     'الكاميرا',
                     style: TextStyle(fontFamily: 'Tajawal'),
@@ -108,7 +113,7 @@ class _CustomOrderScreenState extends ConsumerState<CustomOrderScreen> {
 
     final configAsync = ref.read(appConfigProvider);
     final config = configAsync.valueOrNull;
-    final number = config?.whatsappNumber ?? '201099684347';
+    final number = config?.whatsappNumber ?? '201092970736';
 
     final textBuffer = StringBuffer();
     textBuffer.writeln('🌸 طلب تصميم خاص - خامات هاندميد 🌸');
@@ -134,10 +139,7 @@ class _CustomOrderScreenState extends ConsumerState<CustomOrderScreen> {
           subject: 'طلب تصميم خاص - خامات',
         );
       } else {
-        await Share.share(
-          message,
-          subject: 'طلب تصميم خاص - خامات',
-        );
+        await Share.share(message, subject: 'طلب تصميم خاص - خامات');
       }
     } catch (_) {}
 
@@ -167,7 +169,7 @@ class _CustomOrderScreenState extends ConsumerState<CustomOrderScreen> {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          'طلب تصميم خاص',
+          'تنفيذ منتجك الخاص حسب الطلب',
           style: TextStyle(
             color: AppColors.textDark,
             fontWeight: FontWeight.bold,
@@ -194,11 +196,17 @@ class _CustomOrderScreenState extends ConsumerState<CustomOrderScreen> {
                   decoration: BoxDecoration(
                     color: AppColors.primary.withOpacity(0.08),
                     borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: AppColors.primary.withOpacity(0.2)),
+                    border: Border.all(
+                      color: AppColors.primary.withOpacity(0.2),
+                    ),
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.info_outline, color: AppColors.primary, size: 28),
+                      const Icon(
+                        Icons.info_outline,
+                        color: AppColors.primary,
+                        size: 28,
+                      ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
@@ -229,18 +237,26 @@ class _CustomOrderScreenState extends ConsumerState<CustomOrderScreen> {
                 TextFormField(
                   controller: _descController,
                   maxLines: 4,
-                  validator: (val) =>
-                      val == null || val.trim().isEmpty ? 'يرجى كتابة وصف للتصميم المطلوب' : null,
+                  validator: (val) => val == null || val.trim().isEmpty
+                      ? 'يرجى كتابة وصف للتصميم المطلوب'
+                      : null,
                   decoration: InputDecoration(
-                    hintText: 'اكتبي هنا مقاس القطعة، الخامات المطلوبة، وأي تفاصيل أخرى...',
-                    hintStyle: const TextStyle(fontFamily: 'Tajawal', fontSize: 13),
+                    hintText:
+                        'اكتبي هنا مقاس القطعة، الخامات المطلوبة، وأي تفاصيل أخرى...',
+                    hintStyle: const TextStyle(
+                      fontFamily: 'Tajawal',
+                      fontSize: 13,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(color: Colors.grey),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.primary, width: 2),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 2,
+                      ),
                     ),
                   ),
                 ),
@@ -266,7 +282,10 @@ class _CustomOrderScreenState extends ConsumerState<CustomOrderScreen> {
                             controller: _dimensionsController,
                             decoration: InputDecoration(
                               hintText: 'مثال: 50 × 50 سم',
-                              hintStyle: const TextStyle(fontFamily: 'Tajawal', fontSize: 13),
+                              hintStyle: const TextStyle(
+                                fontFamily: 'Tajawal',
+                                fontSize: 13,
+                              ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -293,7 +312,10 @@ class _CustomOrderScreenState extends ConsumerState<CustomOrderScreen> {
                             controller: _colorsController,
                             decoration: InputDecoration(
                               hintText: 'مثال: روز غولد، بيج',
-                              hintStyle: const TextStyle(fontFamily: 'Tajawal', fontSize: 13),
+                              hintStyle: const TextStyle(
+                                fontFamily: 'Tajawal',
+                                fontSize: 13,
+                              ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -340,9 +362,14 @@ class _CustomOrderScreenState extends ConsumerState<CustomOrderScreen> {
                                   top: 8,
                                   left: 8,
                                   child: CircleAvatar(
-                                    backgroundColor: Colors.black.withOpacity(0.6),
+                                    backgroundColor: Colors.black.withOpacity(
+                                      0.6,
+                                    ),
                                     child: IconButton(
-                                      icon: const Icon(Icons.delete_outline, color: Colors.white),
+                                      icon: const Icon(
+                                        Icons.delete_outline,
+                                        color: Colors.white,
+                                      ),
                                       onPressed: () {
                                         setState(() {
                                           _selectedImage = null;
@@ -357,8 +384,11 @@ class _CustomOrderScreenState extends ConsumerState<CustomOrderScreen> {
                         : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.add_photo_alternate_outlined,
-                                  size: 48, color: AppColors.primary),
+                              const Icon(
+                                Icons.add_photo_alternate_outlined,
+                                size: 48,
+                                color: AppColors.primary,
+                              ),
                               const SizedBox(height: 8),
                               Text(
                                 'اضغطي لإضافة صورة من المعرض أو الكاميرا',

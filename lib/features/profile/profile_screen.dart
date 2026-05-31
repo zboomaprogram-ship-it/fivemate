@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../shared/providers/api_providers.dart';
+import '../../shared/providers/app_config_provider.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -103,6 +104,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final configAsync = ref.watch(appConfigProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('حسابي'),
@@ -332,18 +334,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                         final msg = Uri.encodeComponent(
                                           'مرحباً متجر خامات، أود الاستفسار عن حالة طلبي المرسل بتاريخ $formattedDate.\n\nالاسم: $name\nالهاتف: $phone',
                                         );
-                                        final box = Hive.box('cache_box');
-                                        final cachedConfig = box.get(
-                                          'cached_config',
-                                        );
-                                        String whatsappNum = '201099684347';
-                                        if (cachedConfig is Map &&
-                                            cachedConfig['whatsapp_number'] !=
-                                                null) {
-                                          whatsappNum =
-                                              cachedConfig['whatsapp_number']
-                                                  .toString();
-                                        }
+                                        final whatsappNum = configAsync.valueOrNull?.whatsappNumber ?? '201092970736';
                                         final url =
                                             'https://wa.me/$whatsappNum?text=$msg';
                                         if (await url_launcher.canLaunchUrl(
@@ -375,18 +366,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                     if (order['message'] != null)
                                       TextButton.icon(
                                         onPressed: () async {
-                                          final box = Hive.box('cache_box');
-                                          final cachedConfig = box.get(
-                                            'cached_config',
-                                          );
-                                          String whatsappNum = '201092970736';
-                                          if (cachedConfig is Map &&
-                                              cachedConfig['whatsapp_number'] !=
-                                                  null) {
-                                            whatsappNum =
-                                                cachedConfig['whatsapp_number']
-                                                    .toString();
-                                          }
+                                          final whatsappNum = configAsync.valueOrNull?.whatsappNumber ?? '201092970736';
                                           final msg = Uri.encodeComponent(
                                             order['message'],
                                           );
@@ -451,7 +431,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         color: AppColors.primary,
                       ),
                       title: const Text(
-                        'معرض التنسيقات والأفكار (Lookbook)',
+                        'أفكار وإبداعات جاهزة',
                         style: const TextStyle(
                           fontFamily: 'Tajawal',
                           fontWeight: FontWeight.bold,
@@ -470,7 +450,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         color: AppColors.primary,
                       ),
                       title: const Text(
-                        'طلب تصميم خاص (Custom Order)',
+                        'تنفيذ منتجك الخاص حسب الطلب',
                         style: const TextStyle(
                           fontFamily: 'Tajawal',
                           fontWeight: FontWeight.bold,
@@ -508,13 +488,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ],
                     ),
                     const Divider(height: 24, color: AppColors.borderLight),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('الدعم الفني', style: AppTextStyles.body),
+                        const Text('الدعم الفني', style: AppTextStyles.body),
                         Text(
-                          'support@5amat-handmade.com',
-                          style: TextStyle(
+                          configAsync.valueOrNull?.supportEmail ?? 'support@5amat-handmade.com',
+                          style: const TextStyle(
                             color: AppColors.primaryDark,
                             fontSize: 12,
                           ),

@@ -57,7 +57,7 @@ class StyleGalleryScreen extends ConsumerWidget {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          'معرض التنسيقات والأفكار',
+          'أفكار وإبداعات جاهزة',
           style: TextStyle(
             color: AppColors.textDark,
             fontWeight: FontWeight.bold,

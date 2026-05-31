@@ -18,13 +18,17 @@ if (!defined('ABSPATH')) {
 // Define option helper that supports both ACF get_field option format and WordPress get_option native fallbacks
 function app_get_option($key, $default = '')
 {
+    $val = get_option('options_' . $key);
+    if ($val !== false && $val !== null && $val !== '') {
+        return $val;
+    }
     if (function_exists('get_field')) {
-        $val = get_field($key, 'option');
-        if ($val !== null && $val !== false) {
-            return $val;
+        $acf_val = get_field($key, 'option');
+        if ($acf_val !== null && $acf_val !== false && $acf_val !== '') {
+            return $acf_val;
         }
     }
-    return get_option('options_' . $key, $default);
+    return $default;
 }
 
 // Add custom "App Settings" admin menu page that works completely natively without external plugins
@@ -110,7 +114,7 @@ function app_settings_page()
     $home_welcome_text = get_option('options_home_welcome_text', 'أهلاً بكِ في خامات');
     $home_subtitle = get_option('options_home_subtitle', 'كل خامات ومستلزمات الهاند ميد');
     $promo_badge_text = get_option('options_promo_badge_text', 'جديد');
-    $whatsapp_number = get_option('options_whatsapp_number', '201099684347');
+    $whatsapp_number = get_option('options_whatsapp_number', '201092970736');
     $whatsapp_greeting_text = get_option('options_whatsapp_greeting_text', "أهلاً بك في متجر خامات!\nتفاصيل طلبي:\n\n{items}\n\nالمجموع: {total} ج.م\n\nاسم العميل: {name}\nالهاتف: {phone}\nالمحافظة: {governorate}\nالعنوان بالتفصيل: {address}");
     $support_email = get_option('options_support_email', 'support@5amat-handmade.com');
     $onesignal_app_id = get_option('options_onesignal_app_id', '');
@@ -189,7 +193,7 @@ function app_settings_page()
                     <td>
                         <input type="text" name="whatsapp_number" class="regular-text"
                             value="<?php echo esc_attr($whatsapp_number); ?>" />
-                        <p class="description">Must include country code, no spaces or plus signs (e.g. 201099684347 / رقم
+                        <p class="description">Must include country code, no spaces or plus signs (e.g. 201092970736 / رقم
                             الهاتف مع رمز الدولة بدون مسافات أو علامة +)</p>
                     </td>
                 </tr>
@@ -396,8 +400,8 @@ add_action('acf/init', function () {
                     'label' => 'WhatsApp Number (رقم الواتساب)',
                     'name' => 'whatsapp_number',
                     'type' => 'text',
-                    'instructions' => 'With country code, no spaces (e.g. 201099684347).',
-                    'default_value' => '201099684347',
+                    'instructions' => 'With country code, no spaces (e.g. 201092970736).',
+                    'default_value' => '201092970736',
                 ],
                 [
                     'key' => 'field_5amat_whatsapp_greeting',
@@ -534,7 +538,7 @@ function app_get_config()
         'home_welcome_text' => app_get_option('home_welcome_text', 'أهلاً بكِ في خامات'),
         'home_subtitle' => app_get_option('home_subtitle', 'كل خامات ومستلزمات الهاند ميد'),
         'promo_badge_text' => app_get_option('promo_badge_text', 'جديد'),
-        'whatsapp_number' => app_get_option('whatsapp_number', '201099684347'),
+        'whatsapp_number' => app_get_option('whatsapp_number', '201092970736'),
         'whatsapp_greeting' => app_get_option('whatsapp_greeting_text', "أهلاً بك في متجر خامات!\nتفاصيل طلبي:\n\n{items}\n\nالمجموع: {total} ج.م\n\nاسم العميل: {name}\nالهاتف: {phone}\nالمحافظة: {governorate}\nالعنوان بالتفصيل: {address}"),
         'whatsapp_text_template' => app_get_option('whatsapp_greeting_text', "أهلاً بك في متجر خامات!\nتفاصيل طلبي:\n\n{items}\n\nالمجموع: {total} ج.م\n\nاسم العميل: {name}\nالهاتف: {phone}\nالمحافظة: {governorate}\nالعنوان بالتفصيل: {address}"),
         'support_email' => app_get_option('support_email', 'support@5amat-handmade.com'),
