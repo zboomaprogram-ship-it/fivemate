@@ -31,8 +31,11 @@ class AppConfigModel {
 
   factory AppConfigModel.fromJson(Map<String, dynamic> json) {
     return AppConfigModel(
-      whatsappNumber: json['whatsapp_number'] ?? '201201236547', // Fallback default
-      whatsappTextTemplate: json['whatsapp_text_template'] ?? json['whatsapp_greeting'] ?? 
+      whatsappNumber:
+          json['whatsapp_number'] ?? '201092970736', // Fallback default
+      whatsappTextTemplate:
+          json['whatsapp_text_template'] ??
+          json['whatsapp_greeting'] ??
           'مرحباً متجر خامات، أود تأكيد الطلب التالي:\n\n*الاسم:* {name}\n*الهاتف:* {phone}\n*المحافظة:* {governorate}\n*العنوان:* {address}\n\n*المنتجات:* \n{items}\n\n*المجموع الإجمالي:* {total} ج.م',
       maintenanceMode: json['maintenance_mode'] ?? false,
       banners: List<String>.from(json['banners'] ?? []),
@@ -41,9 +44,14 @@ class AppConfigModel {
       forceUpdateVersion: json['force_update_version'] ?? '1.0.0',
       customOrderEnabled: json['custom_order_enabled'] ?? true,
       collectionName: json['collection_name'] ?? 'مجموعة الصيف الجديد',
-      collectionLaunchDate: json['collection_launch_date'] ?? DateTime.now().add(const Duration(days: 7)).toIso8601String(),
-      collectionTeaserImage: json['collection_teaser_image'] ?? 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=600',
-      onesignalAppId: json['onesignal_app_id'] ?? '5amat-onesignal-placeholder-app-id',
+      collectionLaunchDate:
+          json['collection_launch_date'] ??
+          DateTime.now().add(const Duration(days: 7)).toIso8601String(),
+      collectionTeaserImage:
+          json['collection_teaser_image'] ??
+          'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=600',
+      onesignalAppId:
+          json['onesignal_app_id'] ?? '5amat-onesignal-placeholder-app-id',
       styleGallery: List<String>.from(json['style_gallery'] ?? []),
     );
   }
@@ -70,7 +78,7 @@ class AppConfigModel {
   static AppConfigModel get localFallback {
     return AppConfigModel(
       whatsappNumber: '201201236547', // Egyptian phone number
-      whatsappTextTemplate: 
+      whatsappTextTemplate:
           'مرحباً متجر خامات، أود تأكيد الطلب التالي:\n\n*الاسم:* {name}\n*الهاتف:* {phone}\n*المحافظة:* {governorate}\n*العنوان:* {address}\n\n*المنتجات:* \n{items}\n\n*المجموع الإجمالي:* {total} ج.م',
       maintenanceMode: false,
       banners: [
@@ -83,8 +91,11 @@ class AppConfigModel {
       forceUpdateVersion: '1.0.0',
       customOrderEnabled: true,
       collectionName: 'مجموعة الصيف الجديد',
-      collectionLaunchDate: DateTime.now().add(const Duration(days: 7)).toIso8601String(),
-      collectionTeaserImage: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=600',
+      collectionLaunchDate: DateTime.now()
+          .add(const Duration(days: 7))
+          .toIso8601String(),
+      collectionTeaserImage:
+          'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=600',
       onesignalAppId: '5amat-onesignal-placeholder-app-id',
       styleGallery: [
         'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=600',
@@ -95,4 +106,3 @@ class AppConfigModel {
     );
   }
 }
-

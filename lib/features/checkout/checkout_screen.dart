@@ -24,7 +24,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
   final _giftMessageController = TextEditingController();
-  
+
   String? _selectedGovernorate;
   bool _isGift = false;
   late final Box _prefsBox;
@@ -78,7 +78,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       'دمياط',
       'بورسعيد',
       'الإسماعيلية',
-      'السويس'
+      'السويس',
     ].contains(gov)) {
       return 'خلال 2 إلى 3 أيام عمل';
     } else {
@@ -137,13 +137,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
     final cartItems = ref.read(cartProvider);
     final subtotal = ref.read(cartProvider.notifier).totalPrice;
-    
+
     // Read applied coupon details
     final appliedPromo = ref.read(appliedPromoProvider);
     final promoDiscount = ref.read(promoDiscountProvider);
     final discountAmount = subtotal * promoDiscount;
     final total = subtotal - discountAmount;
-    
+
     // Read shop config values (number and template)
     final configAsync = ref.read(appConfigProvider);
     final config = configAsync.value ?? AppConfigModel.localFallback;
@@ -151,7 +151,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     // Compile line items text
     final StringBuffer itemsBuffer = StringBuffer();
     for (var item in cartItems) {
-      itemsBuffer.writeln('• ${item.quantity} × ${item.name} (${(item.price * item.quantity).toStringAsFixed(2)} ج.م)');
+      itemsBuffer.writeln(
+        '• ${item.quantity} × ${item.name} (${(item.price * item.quantity).toStringAsFixed(2)} ج.م)',
+      );
     }
 
     // Format final template message
@@ -166,13 +168,15 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     // Append coupon code details if active
     if (appliedPromo != null && promoDiscount > 0.0) {
       message += '\n\n🏷️ *كود الخصم المستخدم*: $appliedPromo';
-      message += '\n💰 *قيمة الخصم*: -${discountAmount.toStringAsFixed(2)} ج.م (${(promoDiscount * 100).toInt()}%)';
+      message +=
+          '\n💰 *قيمة الخصم*: -${discountAmount.toStringAsFixed(2)} ج.م (${(promoDiscount * 100).toInt()}%)';
     }
 
     // Append to message if gift
     if (_isGift) {
       message += '\n\n🎁 *طلب مغلف كهدية*';
-      message += '\n💬 *رسالة الإهداء*: "${_giftMessageController.text.trim()}"';
+      message +=
+          '\n💬 *رسالة الإهداء*: "${_giftMessageController.text.trim()}"';
     }
 
     // Append delivery estimation
@@ -183,7 +187,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       'date': DateTime.now().toIso8601String(),
       'total': total,
       'items_count': ref.read(cartProvider.notifier).totalItemsCount,
-      'items_summary': cartItems.map((e) => '${e.quantity}× ${e.name}').join(', '),
+      'items_summary': cartItems
+          .map((e) => '${e.quantity}× ${e.name}')
+          .join(', '),
       'is_gift': _isGift,
       'gift_message': _isGift ? _giftMessageController.text.trim() : '',
       'governorate': _selectedGovernorate!,
@@ -193,7 +199,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       'name': _nameController.text.trim(),
       'phone': _phoneController.text.trim(),
     };
-    final List<dynamic> currentOrders = _ordersBox.get('history', defaultValue: []);
+    final List<dynamic> currentOrders = _ordersBox.get(
+      'history',
+      defaultValue: [],
+    );
     currentOrders.add(newOrder);
     await _ordersBox.put('history', currentOrders);
 
@@ -207,7 +216,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
     // Formulate and trigger WhatsApp URI launcher
     final whatsappNumber = config.whatsappNumber;
-    final whatsappUrl = Uri.parse('https://wa.me/$whatsappNumber?text=${Uri.encodeComponent(message)}');
+    final whatsappUrl = Uri.parse(
+      'https://wa.me/$whatsappNumber?text=${Uri.encodeComponent(message)}',
+    );
 
     try {
       if (await canLaunchUrl(whatsappUrl)) {
@@ -256,8 +267,14 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final cartItemsCount = ref.watch(cartProvider.select((c) => ref.read(cartProvider.notifier).totalItemsCount));
-    final totalPrice = ref.watch(cartProvider.select((c) => ref.read(cartProvider.notifier).totalPrice));
+    final cartItemsCount = ref.watch(
+      cartProvider.select(
+        (c) => ref.read(cartProvider.notifier).totalItemsCount,
+      ),
+    );
+    final totalPrice = ref.watch(
+      cartProvider.select((c) => ref.read(cartProvider.notifier).totalPrice),
+    );
 
     return Scaffold(
       appBar: AppBar(title: const Text('تفاصيل التوصيل')),
@@ -281,9 +298,15 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('ملخص الطلب', style: AppTextStyles.titleMedium),
+                            const Text(
+                              'ملخص الطلب',
+                              style: AppTextStyles.titleMedium,
+                            ),
                             const SizedBox(height: 4),
-                            Text('عدد المنتجات: $cartItemsCount', style: AppTextStyles.bodySmall),
+                            Text(
+                              'عدد المنتجات: $cartItemsCount',
+                              style: AppTextStyles.bodySmall,
+                            ),
                           ],
                         ),
                         Text(
@@ -365,7 +388,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       _selectedGovernorate = value;
                     });
                   },
-                  validator: (value) => value == null ? 'الرجاء اختيار المحافظة' : null,
+                  validator: (value) =>
+                      value == null ? 'الرجاء اختيار المحافظة' : null,
                 ),
 
                 if (_selectedGovernorate != null) ...[
@@ -375,11 +399,16 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     decoration: BoxDecoration(
                       color: AppColors.secondary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: AppColors.secondary.withOpacity(0.3)),
+                      border: Border.all(
+                        color: AppColors.secondary.withOpacity(0.3),
+                      ),
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.local_shipping_outlined, color: AppColors.secondary),
+                        const Icon(
+                          Icons.local_shipping_outlined,
+                          color: AppColors.secondary,
+                        ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
@@ -404,7 +433,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   maxLines: 2,
                   decoration: const InputDecoration(
                     labelText: 'العنوان بالتفصيل *',
-                    hintText: 'المدينة، اسم الشارع، رقم المبنى، الطابق، علامة مميزة',
+                    hintText:
+                        'المدينة، اسم الشارع، رقم المبنى، الطابق، علامة مميزة',
                     prefixIcon: Icon(Icons.location_on_outlined),
                   ),
                   validator: (value) {
@@ -419,15 +449,28 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: _isGift ? AppColors.accent : AppColors.border),
+                    border: Border.all(
+                      color: _isGift ? AppColors.accent : AppColors.border,
+                    ),
                     borderRadius: BorderRadius.circular(12),
-                    color: _isGift ? AppColors.accent.withOpacity(0.05) : Colors.transparent,
+                    color: _isGift
+                        ? AppColors.accent.withOpacity(0.05)
+                        : Colors.transparent,
                   ),
                   child: Column(
                     children: [
                       SwitchListTile(
-                        title: const Text('🎁 إرسال كهدية مغلفة؟', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Tajawal')),
-                        subtitle: const Text('تغليف هدايا فاخر يدوي مع كارت إهداء خاص مدمج.', style: TextStyle(fontSize: 12, fontFamily: 'Tajawal')),
+                        title: const Text(
+                          '🎁 إرسال كهدية مغلفة؟',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Tajawal',
+                          ),
+                        ),
+                        subtitle: const Text(
+                          'تغليف هدايا فاخر يدوي مع كارت إهداء خاص مدمج.',
+                          style: TextStyle(fontSize: 12, fontFamily: 'Tajawal'),
+                        ),
                         activeColor: AppColors.accent,
                         value: _isGift,
                         onChanged: (value) {
@@ -438,17 +481,23 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       ),
                       if (_isGift)
                         Padding(
-                          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+                          padding: const EdgeInsets.only(
+                            left: 16.0,
+                            right: 16.0,
+                            bottom: 16.0,
+                          ),
                           child: TextFormField(
                             controller: _giftMessageController,
                             maxLines: 2,
                             decoration: const InputDecoration(
                               labelText: 'رسالة كارت الإهداء',
-                              hintText: 'اكتب الكلمات التي تود كتابتها على كارت الهدية هنا...',
+                              hintText:
+                                  'اكتب الكلمات التي تود كتابتها على كارت الهدية هنا...',
                               prefixIcon: Icon(Icons.card_giftcard),
                             ),
                             validator: (value) {
-                              if (_isGift && (value == null || value.trim().isEmpty)) {
+                              if (_isGift &&
+                                  (value == null || value.trim().isEmpty)) {
                                 return 'الرجاء إدخال رسالة الإهداء';
                               }
                               return null;
@@ -467,7 +516,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
                 // Warning Box: Price does not include shipping
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFFF9E6),
                     border: Border.all(color: const Color(0xFFFFE599)),
@@ -475,7 +527,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ),
                   child: const Row(
                     children: [
-                      Icon(Icons.warning_amber_rounded, color: Color(0xFFB27A00)),
+                      Icon(
+                        Icons.warning_amber_rounded,
+                        color: Color(0xFFB27A00),
+                      ),
                       SizedBox(width: 10),
                       Expanded(
                         child: Text(
@@ -518,7 +573,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const Text(
-                        'من فضلك بعد إتمام الطلب، قم بتحويل المبلغ على رقم فودافون كاش ثم أرسل صورة أو لقطة شاشة من عملية التحويل على واتساب',
+                        'من فضلك بعد إتمام الطلب، قم بتحويل المبلغ على رقم فودافون كاش او انستاباي ثم أرسل صورة أو لقطة شاشة من عملية التحويل على واتساب',
                         style: TextStyle(
                           color: AppColors.textDark,
                           fontSize: 13,
@@ -583,7 +638,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 const SizedBox(height: 16),
                 const Text(
                   'عند الضغط على تأكيد، سيتم فتح الواتساب تلقائياً لإرسال رسالة تفاصيل الطلب مع الفاتورة. تأكد من تفعيل رقم الواتساب الخاص بك.',
-                  style: TextStyle(color: AppColors.textMedium, fontSize: 11, height: 1.4),
+                  style: TextStyle(
+                    color: AppColors.textMedium,
+                    fontSize: 11,
+                    height: 1.4,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ],
