@@ -268,27 +268,39 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
           Expanded(
             child: RefreshIndicator(
               onRefresh: () => _fetchProducts(refresh: true),
-              child: _products.isEmpty && !_isLoadingProducts
-                  ? _hasError
-                      ? _buildErrorWidget()
-                      : _buildEmptyWidget()
-                  : GridView.builder(
+              child: _products.isEmpty
+                  ? (_isLoadingProducts
+                      ? _buildShimmerGrid()
+                      : (_hasError
+                          ? _buildErrorWidget()
+                          : _buildEmptyWidget()))
+                  : CustomScrollView(
                       controller: _scrollController,
-                      padding: const EdgeInsets.all(16),
-                      itemCount: _products.length + (_hasMore ? 1 : 0),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.72,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                      ),
-                      itemBuilder: (context, index) {
-                        if (index == _products.length) {
-                          // Load more indicator
-                          return _buildLoadMoreWidget();
-                        }
-                        return ProductCard(product: _products[index]);
-                      },
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      slivers: [
+                        SliverPadding(
+                          padding: const EdgeInsets.all(16),
+                          sliver: SliverGrid(
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.72,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
+                            ),
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) => ProductCard(product: _products[index]),
+                              childCount: _products.length,
+                            ),
+                          ),
+                        ),
+                        if (_hasMore)
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 24, left: 16, right: 16),
+                              child: _buildLoadMoreWidget(),
+                            ),
+                          ),
+                      ],
                     ),
             ),
           ),
@@ -361,6 +373,20 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
               ),
               child: const Text('تحميل المزيد'),
             ),
+    );
+  }
+
+  Widget _buildShimmerGrid() {
+    return GridView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: 6,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.72,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+      ),
+      itemBuilder: (context, index) => ShimmerLoader.productCard(),
     );
   }
 
