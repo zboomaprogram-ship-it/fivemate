@@ -24,11 +24,17 @@ class OneSignalHelper {
       // Initialize OneSignal
       OneSignal.initialize(appId);
       
-      // Request notification permission
-      OneSignal.Notifications.requestPermission(true).then((accepted) {
-        print('OneSignal: Notification permission status: $accepted');
-        print('OneSignal: Device Subscription ID: ${OneSignal.User.pushSubscription.id}');
-        print('OneSignal: Device Push Token: ${OneSignal.User.pushSubscription.token}');
+      // Request notification permission after a delay to prevent blocking startup/splash screen
+      Future.delayed(const Duration(seconds: 3), () {
+        OneSignal.Notifications.requestPermission(true).then((accepted) {
+          print('OneSignal: Notification permission status: $accepted');
+          try {
+            print('OneSignal: Device Subscription ID: ${OneSignal.User.pushSubscription.id}');
+            print('OneSignal: Device Push Token: ${OneSignal.User.pushSubscription.token}');
+          } catch (_) {}
+        }).catchError((e) {
+          print('OneSignal: Error requesting notification permission: $e');
+        });
       });
 
       // Handle OneSignal deep linking
