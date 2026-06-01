@@ -71,14 +71,14 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "logo_5amat.jpg.jpeg"
+  image_path: "logo_a5er.jpeg"
   adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "logo_5amat.jpg.jpeg"
+  adaptive_icon_foreground: "logo_a5er.jpeg"
   remove_alpha_ios: true
 
 flutter_native_splash:
   color: "#ffffff"
-  image: "logo_5amat.jpg.jpeg"
+  image: "logo_a5er.jpeg"
   android: true
   ios: true
 
